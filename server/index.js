@@ -4,8 +4,8 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import cors from 'cors';
 
-import buyRoutes from './routes/buy.js';
-import userRoutes from './routes/user.js';
+import buyRoutes from './routes/buyRoute.js';
+import userRoutes from './routes/userRoute.js';
 const app = express();
 
 app.use(bodyParser.json({ limit: '30mb', extended: true }))

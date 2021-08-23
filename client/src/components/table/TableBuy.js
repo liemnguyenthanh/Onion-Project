@@ -1,34 +1,67 @@
 import { Table } from 'antd'
 import React from 'react'
+import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { deleteBuy } from '../../actions/buyAction';
+import { ROLE_LIST, TYPE_BUY } from '../form/FormCreateBuy';
 
-export const TableBuy = ({dataSource}) => {
-
+export const TableBuy = ({dataSource , setIsModalCreate ,setDetailBuy}) => {
+    const dispatch = useDispatch()
+    const onEdit = (item) =>{
+        setIsModalCreate(true)
+        setDetailBuy(item)
+    }
+    const onDelete = (id)=> {
+        dispatch(deleteBuy(id))   
+    }
     const columns = [
         {
             title: "STT",
             width: "5%",
-            //render: (text, record, index) => postsPerPage * (activePage - 1) + (index + 1)
+            render: (text, record, index) => index + 1
         },
         {
             title: "Chủ Vườn",
-            width: "15%",
+            width: "10%",
             ellipsis: true,
-            render: (text) => <span>{text.staff_username}</span>,
+            render: (text) => <Link to={'/buy-detail/'+text._id }>
+                    <span className="text-decoration-underline"> {text.full_name}</span>
+                </Link>,
         },
         {
             title: 'SĐT',
-            width: "15%",
-            render: (text) => <span>{text.staff_username}</span>,
+            width: "10%",
+            render: (text) => <span>{text.phone_number}</span>,
+        },
+        {
+            title: 'Ghi chú',
+            width: "10%",
+            render: (text) => <span>{text.note}</span>,
+        },
+        {
+            title: 'Diện tích',
+            width: "10%",
+            render: (text) => <span>{text.area}</span>,
+        },
+        {
+            title: 'Tiền cọc',
+            width: "10%",
+            render: (text) => <span>{text.deposit}</span>,
+        },
+        {
+            title: 'Hình thức',
+            width: "10%",
+            render: (text) => {
+               const type = TYPE_BUY.find(item =>item.id == text.type_buy)
+               return <span>{type?.title}</span>;
+            }
         },
         {
             title: 'Trạng thái',
             width: "10%",
             render: (text) => {
-                if (text.online_flag) {
-                    return <div style={{color: '#28a745'}}> Online</div>
-                } else {
-                    return <div style={{color: '#eb0029'}}> Offline</div>
-                }
+               const type = ROLE_LIST.find(item =>item.id == text.type_buy)
+               return <span>{type?.title}</span>;
             }
         },
         {
@@ -38,14 +71,14 @@ export const TableBuy = ({dataSource}) => {
             render: (text) => (
                 <div className="d-flex" style={{alignItems: "center"}}>
                     <i
-                        className="fas fa-pen ml-3 mr-3"
+                        className="fas fa-pen me-3"
                         style={{cursor: "pointer"}}
-                       // onClick={() => onEdit(text)}
+                        onClick={() => onEdit(text)}
                     />
                     <i
                         className="fas fa-trash-alt"
                         style={{cursor: "pointer"}}
-                        //onClick={() => onDelete(text.staff_id)}
+                        onClick={() => onDelete(text._id)}
                     />
                 </div>
             ),
@@ -54,9 +87,10 @@ export const TableBuy = ({dataSource}) => {
     return (
         <Table
         columns={columns}
+        bordered
         dataSource={dataSource}
         //pagination={false}
-        rowKey="staff_id"
+        rowKey="phone_number"
     />
     )
 }

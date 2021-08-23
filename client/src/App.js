@@ -3,14 +3,16 @@ import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom'
 import PageHome from './PageHome';
 import PageLogin from './PageLogin';
 const user = localStorage.getItem('user')
+
 const PrivateLoginRoute = ({component: Component, ...rest}) => (
   <Route {...rest} render={(props) => (
       user === null
           // true
           ? <PageLogin/> :
-          <Redirect to='/home'/>
+          <Redirect to='/buy'/>
   )}/>
 )
+
 const PrivateRoute = ({component: Component, ...rest}) => (
   < Route {...rest} render={(props) => (
       user
@@ -19,18 +21,19 @@ const PrivateRoute = ({component: Component, ...rest}) => (
           : <Redirect to='/login'/>
   )}/>
 )
+
 const App = () => {
   
   return (
     <BrowserRouter>
         <Switch>
           <Route exact path="/" render={() => (
-              <Redirect to="/home"/>
+              <Redirect to="/sale" />
           )}/>
           <Route exact path="/login">
               <Route render={props => <PrivateLoginRoute {...props} />}/>
           </Route>
-          <Route exact path="/home">
+          <Route exact path={['/sale' , '/buy' , "/buy-detail/:id"]}>
               <Route render={props => <PrivateRoute {...props} />}/>
           </Route>
       </Switch>

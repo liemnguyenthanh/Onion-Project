@@ -11,4 +11,7 @@ export const deletePost = (id) => axios.delete(`${url}/${id}`);
 export const login = (user) => axios.post(url + '/users/login', user);
 
 //Buy
-export const listBuy = () => axios.post(url + '/buy');
+export const listBuy = () => axios.get(url + '/buy');
+export const createBuy = (item) => axios.post(url + '/buy/create',item);
+export const editBuy = (id,item) => axios.patch(url + '/buy/edit/'+ id,item);
+export const deleteBuy = (id) => axios.delete(url + '/buy/delete/' + id);

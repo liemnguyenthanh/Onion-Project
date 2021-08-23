@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginAccount } from './actions/account';
 const PageLogin = () => {
+    
     const [form, setForm] = useState({
         username : null,
         password : null
     })
+
     const dispatch = useDispatch()
     
     const handleSubmit = () => {

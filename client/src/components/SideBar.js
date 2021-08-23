@@ -7,6 +7,7 @@ import {
     DesktopOutlined,
     ContainerOutlined,
 } from '@ant-design/icons';
+import {Link} from 'react-router-dom';
 const SideBar = () => {
     const [state, setState] = useState({
         collapsed: false,
@@ -20,7 +21,7 @@ const SideBar = () => {
         });
     };
     return <div style={{ width: state.width ,height : '100%'}}>
-        <Button type="primary" onClick={togglCollapsed} style={{ marginBottom: 16 }}>
+        <Button type="primary" onClick={togglCollapsed} style={{ width: '100%' , height : '48px' }}>
             {React.createElement(state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}
         </Button>
         <Menu
@@ -31,13 +32,14 @@ const SideBar = () => {
             inlineCollapsed={state.collapsed}
         >
             <Menu.Item key="1" icon={<PieChartOutlined />}>
-                Option 1
+                <Link to='/buy'>
+                    Thu Hành
+                </Link>
             </Menu.Item>
             <Menu.Item key="2" icon={<DesktopOutlined />}>
-                Option 2
-            </Menu.Item>
-            <Menu.Item key="3" icon={<ContainerOutlined />}>
-                Option 3
+                <Link to='/sale'>
+                    Bán Hành
+                </Link>
             </Menu.Item>
         </Menu>
     </div>

@@ -3,7 +3,9 @@ import { Switch, Route } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import SideBar from './components/SideBar';
 import { Header } from './components/Header';
-import { BuyOnion } from './components/Buy';
+import { BuyOnion } from './components/BuyComponent';
+import { SaleOnion } from './components/SaleComponent';
+import { BuyOnionDetail } from './components/BuyDetailComponent';
 
 const PageHome = (props) => {
   return (
@@ -13,9 +15,12 @@ const PageHome = (props) => {
         <Header />
         <div className={`main_content`}>
               <Switch>
-                <Route exact  path='/home'>
-                    <BuyOnion />
-                </Route>
+                {
+                  main_page.map(item => <Route key={item.id} path={item.path}>
+                                          <item.component />
+                                        </Route>
+                                      )
+                }
               </Switch>
         </div>
       </div>
@@ -24,3 +29,21 @@ const PageHome = (props) => {
 }
 
 export default PageHome
+
+const main_page = [
+  {
+    id : 1 , 
+    path : '/buy',
+    component: BuyOnion
+  },
+  {
+    id : 2 , 
+    path : '/sale',
+    component: SaleOnion
+  },
+  {
+    id : 3 , 
+    path : "/buy-detail/:id",
+    component: BuyOnionDetail
+  },
+]
