@@ -1,32 +1,29 @@
 import React, {useEffect, useState} from "react";
 import {Form, Input, Select} from "antd";
 import {useDispatch} from "react-redux";
-import { createBuy, editBuy } from "../../actions/buyAction";
+import { createBuy, createBuyDetail, editBuy } from "../../actions/buyAction";
 import TextArea from "antd/lib/input/TextArea";
 import BagComponent from "../bag/bag";
-
+import { nanoid } from 'nanoid';
+import {useParams} from 'react-router-dom'
 const FormCreateDriver = (props) => {
     const {handleCancel, detailBuy ,formCreate} = props;
+    const [totalBag, setTotalBag] = useState([ ])
     const dispatch = useDispatch();
+    const { id  : owner} = useParams()
     useEffect(() => {
         if (detailBuy) {
             formCreate.setFieldsValue({
                 full_name: detailBuy.full_name || null,
-                phone_number: detailBuy.phone_number|| null,
                 status: detailBuy.status|| null,
-                deposit: detailBuy.deposit|| null,
-                area: detailBuy.area|| null,
-                type_buy: detailBuy.type_buy|| null,
+                price: detailBuy.price|| null,
                 note: detailBuy.note|| null,
             })
         } else {
             formCreate.setFieldsValue({
                 full_name: null,
-                phone_number:null,
                 status: null,
-                deposit:  null,
-                area: null,
-                type_buy: null,
+                price:  null,
                 note: null,
             })
         }
@@ -37,15 +34,17 @@ const FormCreateDriver = (props) => {
     };
 
     const createSubmit = (info) => {
-        dispatch(createBuy(info));
+        dispatch(createBuyDetail(info));
     };
     const editSubmit = (info) => {
        dispatch(editBuy(detailBuy._id,info));
        handleCancel()
     };
     const handleFinishFormCreate = (info) => {
-        info.area = parseFloat(info.area)
-        info.deposit = parseFloat(info.deposit)
+        info.owner = owner
+        info.price = parseFloat(info.price)
+        info.bags = totalBag
+        console.log({info});
         if (detailBuy) {
             editSubmit(info);
         } else {
@@ -99,28 +98,34 @@ const FormCreateDriver = (props) => {
                     <div className="col-4 d-flex">
                         <div className="pe-2">Lớn</div>
                         <Form.Item
-                                name="box"
+                                name="box_l"
                             >
-                            <Input size="large"/>
+                            <Input size="large" style ={{ width : '50px'}}/>
                         </Form.Item>
                     </div>
                     <div className="col-4 d-flex">
                         <div className="pe-2">Trung</div>
                         <Form.Item
-                                name="box"
+                                name="box_m"
                             >
-                            <Input size="large"/>
+                            <Input size="large"  style ={{ width : '50px'}}/>
                         </Form.Item>
                     </div>
                     <div className="col-4 d-flex">
                         <div className="pe-2">Bi</div>
                         <Form.Item
-                                name="box"
+                                name="box_s"
                             >
-                            <Input size="large"/>
+                            <Input size="large" style ={{ width : '50px'}}/>
                         </Form.Item>
                     </div>
-                    <BagComponent/>
+                    <div className="col-12">
+                        Bao :
+                    </div>
+                    <BagComponent 
+                        totalBag={totalBag}
+                        setTotalBag={setTotalBag}    
+                            />
                     <div className="col-12">
                         <div>Ghi chú :</div>
                         <Form.Item

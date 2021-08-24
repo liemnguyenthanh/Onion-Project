@@ -15,3 +15,6 @@ export const listBuy = () => axios.get(url + '/buy');
 export const createBuy = (item) => axios.post(url + '/buy/create',item);
 export const editBuy = (id,item) => axios.patch(url + '/buy/edit/'+ id,item);
 export const deleteBuy = (id) => axios.delete(url + '/buy/delete/' + id);
+
+//buy detail
+export const createBuyDetail = (item) => axios.post(url + '/buyDetail/create',item);

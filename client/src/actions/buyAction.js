@@ -1,4 +1,4 @@
-import { GET_LIST_BUY_FAIL, GET_LIST_BUY_REQUEST, GET_LIST_BUY_SUCCESS, OPTION_BUY_FAIL, OPTION_BUY_REQUEST, OPTION_BUY_SUCCESS } from '../constants/actionTypes';
+import { GET_LIST_BUY_FAIL, GET_LIST_BUY_REQUEST, GET_LIST_BUY_SUCCESS, OPTION_BUY_DETAIL_FAIL, OPTION_BUY_DETAIL_REQUEST, OPTION_BUY_DETAIL_SUCCESS, OPTION_BUY_FAIL, OPTION_BUY_REQUEST, OPTION_BUY_SUCCESS } from '../constants/actionTypes';
 import * as api from '../api/index.js';
 import { showNotification } from '../helper';
 
@@ -29,6 +29,24 @@ export const createBuy = (item) => async (dispatch) => {
     }
   } catch (error) {
       dispatch({ type: OPTION_BUY_FAIL });
+      showNotification({type: 'error', message: error.message, title: "Error"})
+  }
+};
+
+
+export const createBuyDetail = (item) => async (dispatch) => {
+  try {
+    
+    dispatch({ type: OPTION_BUY_DETAIL_REQUEST });
+    const { data } = await api.createBuyDetail(item);
+    const {success,detail} = data
+    if(success){
+      dispatch({ type: OPTION_BUY_DETAIL_SUCCESS ,payload : detail});
+      dispatch(getListBuy())
+      showNotification({type: 'success', message: "Tạo thành công!", title: "Success"})
+    }
+  } catch (error) {
+      dispatch({ type: OPTION_BUY_DETAIL_FAIL });
       showNotification({type: 'error', message: error.message, title: "Error"})
   }
 };
